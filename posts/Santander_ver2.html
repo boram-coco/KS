@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.283">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="김보람">
+<meta name="dcterms.date" content="2023-12-19">
+
+<title>KS - [Kaggle] 02. Santander Product Recommendation Competition</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">KS</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com" rel="" target=""><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">[Kaggle] 02. Santander Product Recommendation Competition</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>김보람 </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">December 19, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="ref" class="level1">
+<h1>ref</h1>
+<p><a href="https://www.kaggle.com/competitions/santander-product-recommendation/overview">[Kaggle] Santander Product Recommendation Competition</a></p>
+<p><a href="https://search.shopping.naver.com/book/catalog/32456287218?cat_id=50010921&amp;frm=PBOKPRO&amp;query=Kaggle+%EC%9A%B0%EC%8A%B9%EC%9E%91%EC%9C%BC%EB%A1%9C+%EB%B0%B0%EC%9A%B0%EB%8A%94+%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D+%ED%83%90%EA%B5%AC%EC%83%9D%ED%99%9C&amp;NaPm=ct%3Dlqc0jf6g%7Cci%3D396ce898b798e1d48ca1cd8ba98df1eff456e2ef%7Ctr%3Dboknx%7Csn%3D95694%7Chk%3D88c5289207d6a57ad40b1dbeafa8e1394b37bce3">kaggle 우승작으로 배우는 머신러닝 탐구생활</a></p>
+</section>
+<section id="import" class="level1">
+<h1>import</h1>
+<div id="22df14af-3e18-4b08-9a0e-ef835fef05a7" class="cell" data-execution_count="47">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xgboost <span class="im">as</span> xgb</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#---#</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> autogluon.multimodal <span class="im">import</span> MultiModalPredictor <span class="co"># from autogluon.tabular import TabularPredictor</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#---#</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">'ignore'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data" class="level1">
+<h1>data</h1>
+<div id="e769042f-bebe-4a55-84ba-279e14f80851" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>kaggle competitions download <span class="op">-</span>c santander<span class="op">-</span>product<span class="op">-</span>recommendation</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Warning: Your Kaggle API key is readable by other users on this system! To fix this, you can run 'chmod 600 /home/coco/.kaggle/kaggle.json'
+santander-product-recommendation.zip: Skipping, found more recently modified local copy (use --force to force download)</code></pre>
+</div>
+</div>
+<div id="ee0d1402-17ac-47a1-8cd3-5c0bfbb3d3e4" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>unzip santander<span class="op">-</span>product<span class="op">-</span>recommendation.<span class="bu">zip</span> <span class="op">-</span>d data </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Archive:  santander-product-recommendation.zip
+  inflating: data/sample_submission.csv.zip  
+  inflating: data/test_ver2.csv.zip  
+  inflating: data/train_ver2.csv.zip  </code></pre>
+</div>
+</div>
+<div id="e199ffbd-4aa9-42a0-8c16-40096a105643" class="cell" data-tags="[]" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df_train <span class="op">=</span> pd.read_csv(<span class="st">'data/train_ver2.csv.zip'</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df_test <span class="op">=</span> pd.read_csv(<span class="st">'data/test_ver2.csv.zip'</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>sample_submission <span class="op">=</span> pd.read_csv(<span class="st">'data/sample_submission.csv.zip'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="236f1b84-1213-478d-bcfa-e42607ae959f" class="cell" data-tags="[]" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>rm <span class="op">-</span>rf data</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>rm nlp<span class="op">-</span>getting<span class="op">-</span>started.<span class="bu">zip</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>rm: cannot remove 'nlp-getting-started.zip': No such file or directory</code></pre>
+</div>
+</div>
+<div id="025c3534-0113-411c-be8e-314b4c25b62a" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df_train.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">fecha_dato</th>
+<th data-quarto-table-cell-role="th">ncodpers</th>
+<th data-quarto-table-cell-role="th">ind_empleado</th>
+<th data-quarto-table-cell-role="th">pais_residencia</th>
+<th data-quarto-table-cell-role="th">sexo</th>
+<th data-quarto-table-cell-role="th">age</th>
+<th data-quarto-table-cell-role="th">fecha_alta</th>
+<th data-quarto-table-cell-role="th">ind_nuevo</th>
+<th data-quarto-table-cell-role="th">antiguedad</th>
+<th data-quarto-table-cell-role="th">indrel</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">ind_hip_fin_ult1</th>
+<th data-quarto-table-cell-role="th">ind_plan_fin_ult1</th>
+<th data-quarto-table-cell-role="th">ind_pres_fin_ult1</th>
+<th data-quarto-table-cell-role="th">ind_reca_fin_ult1</th>
+<th data-quarto-table-cell-role="th">ind_tjcr_fin_ult1</th>
+<th data-quarto-table-cell-role="th">ind_valo_fin_ult1</th>
+<th data-quarto-table-cell-role="th">ind_viv_fin_ult1</th>
+<th data-quarto-table-cell-role="th">ind_nomina_ult1</th>
+<th data-quarto-table-cell-role="th">ind_nom_pens_ult1</th>
+<th data-quarto-table-cell-role="th">ind_recibo_ult1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>2015-01-28</td>
+<td>1375586</td>
+<td>N</td>
+<td>ES</td>
+<td>H</td>
+<td>35</td>
+<td>2015-01-12</td>
+<td>0.0</td>
+<td>6</td>
+<td>1.0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>2015-01-28</td>
+<td>1050611</td>
+<td>N</td>
+<td>ES</td>
+<td>V</td>
+<td>23</td>
+<td>2012-08-10</td>
+<td>0.0</td>
+<td>35</td>
+<td>1.0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>2015-01-28</td>
+<td>1050612</td>
+<td>N</td>
+<td>ES</td>
+<td>V</td>
+<td>23</td>
+<td>2012-08-10</td>
+<td>0.0</td>
+<td>35</td>
+<td>1.0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>2015-01-28</td>
+<td>1050613</td>
+<td>N</td>
+<td>ES</td>
+<td>H</td>
+<td>22</td>
+<td>2012-08-10</td>
+<td>0.0</td>
+<td>35</td>
+<td>1.0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>2015-01-28</td>
+<td>1050614</td>
+<td>N</td>
+<td>ES</td>
+<td>V</td>
+<td>23</td>
+<td>2012-08-10</td>
+<td>0.0</td>
+<td>35</td>
+<td>1.0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 48 columns</p>
+</div>
+</div>
+</div>
+</section>
+<section id="데이터전처리" class="level1">
+<h1>데이터전처리</h1>
+<div id="edab8e34-0643-4db7-a24d-7155028ae748" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>prods <span class="op">=</span> df_train.columns[<span class="dv">24</span>:].tolist()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="80d8ead4-34ca-4a52-a5b1-5dce261d4414" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df_train[prods] <span class="op">=</span> df_train[prods].fillna(<span class="fl">0.0</span>).astype(np.int8)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> 24개 제품 중 하나도 보유하지 않는 고객 데이터 제거</p>
+<div id="62300ca1-bb0d-404b-9f34-8ef22a2ad339" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>no_product <span class="op">=</span> df_train[prods].<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>) <span class="op">==</span> <span class="dv">0</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>df_train <span class="op">=</span> df_train[<span class="op">~</span>no_product]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p><code>df_train[~변수명]</code>을 사용하면 제거!</p>
+</blockquote>
+<p><code>-</code> tr/ts 합치기</p>
+<div id="631ac82f-76cd-4c49-98dc-b4f6c69624bd" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> df_train.columns[<span class="dv">24</span>:]:</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    df_test[col] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.concat([df_train,df_test], axis<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="7776eaf8-44a7-4fce-989c-1bf835b06b6d" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>features <span class="op">=</span> []</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="f3e3deca-c3b1-4ad8-ac40-47d789581091" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>categorical_cols <span class="op">=</span> [<span class="st">'ind_empleado'</span>, <span class="st">'pais_residencia'</span>, <span class="st">'sexo'</span>, <span class="st">'tiprel_1mes'</span>, <span class="st">'indresi'</span>, <span class="st">'indext'</span>, <span class="st">'conyuemp'</span>, <span class="st">'canal_entrada'</span>, <span class="st">'indfall'</span>, <span class="st">'tipodom'</span>, <span class="st">'nomprov'</span>, <span class="st">'segmento'</span>]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> categorical_cols:</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    df[col], _ <span class="op">=</span> df[col].factorize(na_sentinel<span class="op">=-</span><span class="dv">99</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>features <span class="op">+=</span> categorical_cols</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="ee1687e1-c38e-4e01-a079-0f8d01883ed9" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'age'</span>].replace(<span class="st">' NA'</span>, <span class="op">-</span><span class="dv">99</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'age'</span>] <span class="op">=</span> df[<span class="st">'age'</span>].astype(np.int8)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'antiguedad'</span>].replace(<span class="st">'     NA'</span>, <span class="op">-</span><span class="dv">99</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'antiguedad'</span>] <span class="op">=</span> df[<span class="st">'antiguedad'</span>].astype(np.int8)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'renta'</span>].replace(<span class="st">'         NA'</span>, <span class="op">-</span><span class="dv">99</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'renta'</span>].fillna(<span class="op">-</span><span class="dv">99</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'renta'</span>] <span class="op">=</span> df[<span class="st">'renta'</span>].astype(<span class="bu">float</span>).astype(np.int8)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'indrel_1mes'</span>].replace(<span class="st">'P'</span>, <span class="dv">5</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'indrel_1mes'</span>].fillna(<span class="op">-</span><span class="dv">99</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'indrel_1mes'</span>] <span class="op">=</span> df[<span class="st">'indrel_1mes'</span>].astype(<span class="bu">float</span>).astype(np.int8)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="4c53d8f4-405c-4339-ae3c-8a178d29d77a" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>features <span class="op">+=</span> [<span class="st">'age'</span>,<span class="st">'antiguedad'</span>,<span class="st">'renta'</span>,<span class="st">'ind_nuevo'</span>,<span class="st">'indrel'</span>,<span class="st">'indrel_1mes'</span>,<span class="st">'ind_actividad_cliente'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> 날짜 변수 월/연 추출</p>
+<div id="9faecaa8-607c-422e-8821-95025648adb9" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'fecha_alta_month'</span>] <span class="op">=</span>  df[<span class="st">'fecha_alta'</span>].<span class="bu">map</span>(<span class="kw">lambda</span> x: <span class="fl">0.0</span> <span class="cf">if</span> x.__class__ <span class="kw">is</span> <span class="bu">float</span> <span class="cf">else</span> <span class="bu">float</span>(x.split(<span class="st">'-'</span>)[<span class="dv">1</span>])).astype(np.int8)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="2a5ab032-0692-4347-8d78-a2a0d1b33f94" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'fecah_alta_year'</span>] <span class="op">=</span> df[<span class="st">'fecha_alta'</span>].<span class="bu">map</span>(<span class="kw">lambda</span> x:<span class="fl">0.0</span> <span class="cf">if</span> x.__class__ <span class="kw">is</span> <span class="bu">float</span> <span class="cf">else</span> <span class="bu">float</span>(x.split(<span class="st">'-'</span>)[<span class="dv">0</span>])).astype(np.int16)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="a2130a57-ea35-4735-9150-8b49c38b55a1" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>features <span class="op">+=</span> [<span class="st">'fecha_alta_month'</span>,<span class="st">'fecah_alta_year'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="663346f7-2608-4c06-ab63-058db91b6904" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'ult_fec_cli_1t_month'</span>] <span class="op">=</span> df[<span class="st">'ult_fec_cli_1t'</span>].<span class="bu">map</span>(<span class="kw">lambda</span> x: <span class="fl">0.0</span> <span class="cf">if</span> x.__class__ <span class="kw">is</span> <span class="bu">float</span> <span class="cf">else</span> <span class="bu">float</span>(x.split(<span class="st">'-'</span>)[<span class="dv">1</span>])).astype(np.int8)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'ult_fec_cli_1t_year'</span>] <span class="op">=</span> df[<span class="st">'ult_fec_cli_1t'</span>].<span class="bu">map</span>(<span class="kw">lambda</span> x: <span class="fl">0.0</span> <span class="cf">if</span> x.__class__ <span class="kw">is</span> <span class="bu">float</span> <span class="cf">else</span> <span class="bu">float</span>(x.split(<span class="st">'-'</span>)[<span class="dv">0</span>])).astype(np.int16)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>features <span class="op">+=</span> [<span class="st">'ult_fec_cli_1t_month'</span>, <span class="st">'ult_fec_cli_1t_year'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> 그 외 변수 결측값: -99</p>
+<div id="2fa7a80f-ff5b-4312-a5c0-87a5641d7949" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>df.fillna(<span class="op">-</span><span class="dv">99</span>, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> 날짜 숫자로 변환</p>
+<ul>
+<li><code>2015-01-28</code>:1, <code>2015-02-28</code>:2, …, <code>2016-06-28</code>:18</li>
+</ul>
+<div id="b3d759af-67f8-4aa0-9b82-cdeb97accae7" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> date_to_int(str_date):</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    Y, M, D <span class="op">=</span> [<span class="bu">int</span>(a) <span class="cf">for</span> a <span class="kw">in</span> str_date.strip().split(<span class="st">"-"</span>)]</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    int_date <span class="op">=</span> (<span class="bu">int</span>(Y) <span class="op">-</span> <span class="dv">2015</span>) <span class="op">*</span> <span class="dv">12</span> <span class="op">+</span> <span class="bu">int</span>(M)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> int_date</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="c6ff817b-4058-4601-a3c8-df9c36d71fc3" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'int_date'</span>] <span class="op">=</span> df[<span class="st">'fecha_dato'</span>].<span class="bu">map</span>(date_to_int).astype(np.int8)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="e7a0e912-eea2-4c8f-b465-930ed7cca748" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>df_lag <span class="op">=</span> df.copy()</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>df_lag.columns <span class="op">=</span> [col <span class="op">+</span> <span class="st">'_prev'</span> <span class="cf">if</span> col <span class="kw">not</span> <span class="kw">in</span> [<span class="st">'ncodpers'</span>, <span class="st">'int_date'</span>] <span class="cf">else</span> col <span class="cf">for</span> col <span class="kw">in</span> df.columns]</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>df_lag[<span class="st">'int_date'</span>] <span class="op">+=</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="c9963022-6ea5-4dd0-bab0-b3eb83f4ff95" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>df_trn <span class="op">=</span> df.merge(df_lag, on<span class="op">=</span>[<span class="st">'ncodpers'</span>, <span class="st">'int_date'</span>], how<span class="op">=</span><span class="st">'left'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> 저번 달 제품 정보가 존재하지 않으면 0으로 대체</p>
+<div id="729a7bcc-ad01-4384-8e15-220e2e803df1" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> prod <span class="kw">in</span> prods:</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    prev <span class="op">=</span> prod <span class="op">+</span> <span class="st">'_prev'</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    df_trn[prev].fillna(<span class="dv">0</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>df_trn.fillna(<span class="op">-</span><span class="dv">99</span>, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> lag-1 변수 추가</p>
+<div id="f76d1298-97f4-432a-910b-dfac2c10250f" class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>features <span class="op">+=</span> [feature <span class="op">+</span> <span class="st">'_prev'</span> <span class="cf">for</span> feature <span class="kw">in</span> features]</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>features <span class="op">+=</span> [prod <span class="op">+</span> <span class="st">'_prev'</span> <span class="cf">for</span> prod <span class="kw">in</span> prods]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="trtestval" class="level1">
+<h1>tr/test/val</h1>
+<div id="0dfb9d72-c463-478a-8ce0-cb2f4264e49e" class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>use_dates <span class="op">=</span> [<span class="st">'2016-01-28'</span>, <span class="st">'2016-02-28'</span>, <span class="st">'2016-03-28'</span>, <span class="st">'2016-04-28'</span>, <span class="st">'2016-05-28'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="1abdb5b3-04d1-4b80-b368-d0e14a2211e5" class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>trn <span class="op">=</span> df_trn[df_trn[<span class="st">'fecha_dato'</span>].isin(use_dates)]</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>tst <span class="op">=</span> df_trn[df_trn[<span class="st">'fecha_dato'</span>] <span class="op">==</span> <span class="st">'2016-06-28'</span>]</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="kw">del</span> df_trn</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>-</code> 훈련 데이터에 신규 구매 건수 추출</p>
+<div id="2ebdf58f-958a-43d8-b8a0-5b3f45d4f33a" class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> []</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> []</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, prod <span class="kw">in</span> <span class="bu">enumerate</span>(prods):</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    prev <span class="op">=</span> prod <span class="op">+</span> <span class="st">'_prev'</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    prX <span class="op">=</span> trn[(trn[prod] <span class="op">==</span> <span class="dv">1</span>) <span class="op">&amp;</span> (trn[prev] <span class="op">==</span> <span class="dv">0</span>)]</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    prY <span class="op">=</span> np.zeros(prX.shape[<span class="dv">0</span>], dtype<span class="op">=</span>np.int8) <span class="op">+</span> i</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    X.append(prX)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    Y.append(prY)</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>XY <span class="op">=</span> pd.concat(X)</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> np.hstack(Y)</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>XY[<span class="st">'y'</span>] <span class="op">=</span> Y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="06bd0ecd-7f69-4cc0-9d9a-4c74d16483dd" class="cell" data-execution_count="43">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>vld_date <span class="op">=</span> <span class="st">'2016-05-28'</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>XY_trn <span class="op">=</span> XY[XY[<span class="st">'fecha_dato'</span>] <span class="op">!=</span> vld_date]</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>XY_vld <span class="op">=</span> XY[XY[<span class="st">'fecha_dato'</span>] <span class="op">==</span> vld_date]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="학습" class="level1">
+<h1>학습</h1>
+<blockquote class="blockquote">
+<p><strong>XGBoost</strong></p>
+<p><code>max_depth</code>: 트리 모델의 최대 깊이</p>
+<p><code>eta</code>: 학습률</p>
+<p><code>colsample_bytree</code>: 변수 샘플링 기준, 보통 0.6~0.9</p>
+<p><code>colsample_bylevel</code>: 트리의 레벨 별 훈련 데이터의 변수 샘플링해주는 비율</p>
+</blockquote>
+<p><code>-</code> parameter 설정</p>
+<div id="5325d833-482e-4cf4-8493-ec8cb48d23d7" class="cell" data-execution_count="45">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>param <span class="op">=</span> {</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'booster'</span>: <span class="st">'gbtree'</span>,</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'max_depth'</span>: <span class="dv">8</span>,</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'nthread'</span>: <span class="dv">4</span>,</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'num_class'</span>: <span class="bu">len</span>(prods),</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'objective'</span>: <span class="st">'multi:softprob'</span>,</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'silent'</span>: <span class="dv">1</span>,</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'eval_metric'</span>: <span class="st">'mlogloss'</span>,</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'eta'</span>: <span class="fl">0.1</span>,</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'min_child_weight'</span>: <span class="dv">10</span>,</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'colsample_bytree'</span>: <span class="fl">0.8</span>,</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'colsample_bylevel'</span>: <span class="fl">0.9</span>,</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'seed'</span>: <span class="dv">2018</span>,</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="5060813c-9f25-4d3c-bcfc-30993b7d1a75" class="cell" data-execution_count="53">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>XY_trn.ma</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="53">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">fecha_dato</th>
+<th data-quarto-table-cell-role="th">ncodpers</th>
+<th data-quarto-table-cell-role="th">ind_empleado</th>
+<th data-quarto-table-cell-role="th">pais_residencia</th>
+<th data-quarto-table-cell-role="th">sexo</th>
+<th data-quarto-table-cell-role="th">age</th>
+<th data-quarto-table-cell-role="th">fecha_alta</th>
+<th data-quarto-table-cell-role="th">ind_nuevo</th>
+<th data-quarto-table-cell-role="th">antiguedad</th>
+<th data-quarto-table-cell-role="th">indrel</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">ind_valo_fin_ult1_prev</th>
+<th data-quarto-table-cell-role="th">ind_viv_fin_ult1_prev</th>
+<th data-quarto-table-cell-role="th">ind_nomina_ult1_prev</th>
+<th data-quarto-table-cell-role="th">ind_nom_pens_ult1_prev</th>
+<th data-quarto-table-cell-role="th">ind_recibo_ult1_prev</th>
+<th data-quarto-table-cell-role="th">fecha_alta_month_prev</th>
+<th data-quarto-table-cell-role="th">fecah_alta_year_prev</th>
+<th data-quarto-table-cell-role="th">ult_fec_cli_1t_month_prev</th>
+<th data-quarto-table-cell-role="th">ult_fec_cli_1t_year_prev</th>
+<th data-quarto-table-cell-role="th">y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">7658069</td>
+<td>2016-01-28</td>
+<td>1474324</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>43</td>
+<td>2015-10-09</td>
+<td>1.0</td>
+<td>3</td>
+<td>1.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>10.0</td>
+<td>2015.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7628180</td>
+<td>2016-01-28</td>
+<td>1432311</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>26</td>
+<td>2015-08-07</td>
+<td>1.0</td>
+<td>5</td>
+<td>1.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>-99.0</td>
+<td>-99.0</td>
+<td>-99.0</td>
+<td>-99.0</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">7628198</td>
+<td>2016-01-28</td>
+<td>1432232</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>33</td>
+<td>2015-08-07</td>
+<td>0.0</td>
+<td>19</td>
+<td>1.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>-99.0</td>
+<td>-99.0</td>
+<td>-99.0</td>
+<td>-99.0</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7628482</td>
+<td>2016-01-28</td>
+<td>1432080</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>23</td>
+<td>2015-08-07</td>
+<td>1.0</td>
+<td>5</td>
+<td>1.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>-99.0</td>
+<td>-99.0</td>
+<td>-99.0</td>
+<td>-99.0</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">7628692</td>
+<td>2016-01-28</td>
+<td>1432952</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>77</td>
+<td>2015-08-10</td>
+<td>1.0</td>
+<td>5</td>
+<td>1.0</td>
+<td>...</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>8.0</td>
+<td>2015.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">10394466</td>
+<td>2016-04-28</td>
+<td>1297367</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>59</td>
+<td>2014-08-18</td>
+<td>0.0</td>
+<td>20</td>
+<td>1.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>8.0</td>
+<td>2014.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>23</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">10394481</td>
+<td>2016-04-28</td>
+<td>1297315</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>39</td>
+<td>2014-08-18</td>
+<td>0.0</td>
+<td>20</td>
+<td>1.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>8.0</td>
+<td>2014.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>23</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">10394487</td>
+<td>2016-04-28</td>
+<td>1297332</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>30</td>
+<td>2014-08-18</td>
+<td>0.0</td>
+<td>20</td>
+<td>1.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>8.0</td>
+<td>2014.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>23</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">10394502</td>
+<td>2016-04-28</td>
+<td>1297428</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>35</td>
+<td>2014-08-18</td>
+<td>0.0</td>
+<td>25</td>
+<td>1.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>8.0</td>
+<td>2014.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>23</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">10394529</td>
+<td>2016-04-28</td>
+<td>1297412</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>34</td>
+<td>2014-08-18</td>
+<td>0.0</td>
+<td>20</td>
+<td>1.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>8.0</td>
+<td>2014.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>23</td>
+</tr>
+</tbody>
+</table>
+
+<p>161137 rows × 105 columns</p>
+</div>
+</div>
+</div>
+<div id="07cdddf8-fae2-4c8f-8166-e37027ff1762" class="cell" data-execution_count="54">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>X_trn <span class="op">=</span> XY_trn[features].values</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>Y_trn <span class="op">=</span> XY_trn[<span class="st">'y'</span>].values</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>dtrn <span class="op">=</span> xgb.DMatrix(X_trn, label<span class="op">=</span>Y_trn, feature_names<span class="op">=</span>features)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>X_vld <span class="op">=</span> XY_vld[features].values</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>Y_vld <span class="op">=</span> XY_vld[<span class="st">'y'</span>].values</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>dvld <span class="op">=</span> xgb.DMatrix(X_vld, label<span class="op">=</span>Y_vld, feature_names<span class="op">=</span>features)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="075e12ff-4998-4fbd-977b-b966e7613dc9" class="cell" data-execution_count="55">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>watch_list <span class="op">=</span> [(dtrn, <span class="st">'train'</span>), (dvld, <span class="st">'eval'</span>)]</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> xgb.train(param, dtrn, num_boost_round<span class="op">=</span><span class="dv">1000</span>, evals<span class="op">=</span>watch_list, early_stopping_rounds<span class="op">=</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[17:51:53] WARNING: ../src/learner.cc:767: 
+Parameters: { "silent" } are not used.
+
+[0] train-mlogloss:2.68947  eval-mlogloss:2.70092
+[1] train-mlogloss:2.45325  eval-mlogloss:2.46499
+[2] train-mlogloss:2.27879  eval-mlogloss:2.29092
+[3] train-mlogloss:2.14556  eval-mlogloss:2.16003
+[4] train-mlogloss:2.03233  eval-mlogloss:2.04872
+[5] train-mlogloss:1.93794  eval-mlogloss:1.95545
+[6] train-mlogloss:1.85559  eval-mlogloss:1.87363
+[7] train-mlogloss:1.78461  eval-mlogloss:1.80326
+[8] train-mlogloss:1.72369  eval-mlogloss:1.74273
+[9] train-mlogloss:1.67043  eval-mlogloss:1.69015
+[10]    train-mlogloss:1.62181  eval-mlogloss:1.64162
+[11]    train-mlogloss:1.57870  eval-mlogloss:1.59880
+[12]    train-mlogloss:1.54061  eval-mlogloss:1.56100
+[13]    train-mlogloss:1.50500  eval-mlogloss:1.52598
+[14]    train-mlogloss:1.47335  eval-mlogloss:1.49488
+[15]    train-mlogloss:1.44403  eval-mlogloss:1.46575
+[16]    train-mlogloss:1.41845  eval-mlogloss:1.44053
+[17]    train-mlogloss:1.39342  eval-mlogloss:1.41575
+[18]    train-mlogloss:1.37211  eval-mlogloss:1.39459
+[19]    train-mlogloss:1.35270  eval-mlogloss:1.37554
+[20]    train-mlogloss:1.33333  eval-mlogloss:1.35648
+[21]    train-mlogloss:1.31591  eval-mlogloss:1.33916
+[22]    train-mlogloss:1.30018  eval-mlogloss:1.32380
+[23]    train-mlogloss:1.28495  eval-mlogloss:1.30887
+[24]    train-mlogloss:1.27107  eval-mlogloss:1.29518
+[25]    train-mlogloss:1.25847  eval-mlogloss:1.28290
+[26]    train-mlogloss:1.24638  eval-mlogloss:1.27103
+[27]    train-mlogloss:1.23520  eval-mlogloss:1.26012
+[28]    train-mlogloss:1.22499  eval-mlogloss:1.25028
+[29]    train-mlogloss:1.21556  eval-mlogloss:1.24139
+[30]    train-mlogloss:1.20649  eval-mlogloss:1.23269
+[31]    train-mlogloss:1.19831  eval-mlogloss:1.22480
+[32]    train-mlogloss:1.19049  eval-mlogloss:1.21743
+[33]    train-mlogloss:1.18344  eval-mlogloss:1.21077
+[34]    train-mlogloss:1.17619  eval-mlogloss:1.20392
+[35]    train-mlogloss:1.16950  eval-mlogloss:1.19754
+[36]    train-mlogloss:1.16325  eval-mlogloss:1.19175
+[37]    train-mlogloss:1.15747  eval-mlogloss:1.18643
+[38]    train-mlogloss:1.15168  eval-mlogloss:1.18111
+[39]    train-mlogloss:1.14627  eval-mlogloss:1.17612
+[40]    train-mlogloss:1.14141  eval-mlogloss:1.17162
+[41]    train-mlogloss:1.13655  eval-mlogloss:1.16708
+[42]    train-mlogloss:1.13203  eval-mlogloss:1.16290
+[43]    train-mlogloss:1.12802  eval-mlogloss:1.15938
+[44]    train-mlogloss:1.12406  eval-mlogloss:1.15580
+[45]    train-mlogloss:1.12017  eval-mlogloss:1.15236
+[46]    train-mlogloss:1.11651  eval-mlogloss:1.14907
+[47]    train-mlogloss:1.11301  eval-mlogloss:1.14614
+[48]    train-mlogloss:1.10974  eval-mlogloss:1.14323
+[49]    train-mlogloss:1.10664  eval-mlogloss:1.14053
+[50]    train-mlogloss:1.10371  eval-mlogloss:1.13796
+[51]    train-mlogloss:1.10103  eval-mlogloss:1.13574
+[52]    train-mlogloss:1.09843  eval-mlogloss:1.13355
+[53]    train-mlogloss:1.09584  eval-mlogloss:1.13136
+[54]    train-mlogloss:1.09342  eval-mlogloss:1.12943
+[55]    train-mlogloss:1.09101  eval-mlogloss:1.12737
+[56]    train-mlogloss:1.08873  eval-mlogloss:1.12562
+[57]    train-mlogloss:1.08636  eval-mlogloss:1.12386
+[58]    train-mlogloss:1.08435  eval-mlogloss:1.12223
+[59]    train-mlogloss:1.08241  eval-mlogloss:1.12074
+[60]    train-mlogloss:1.08043  eval-mlogloss:1.11916
+[61]    train-mlogloss:1.07846  eval-mlogloss:1.11763
+[62]    train-mlogloss:1.07669  eval-mlogloss:1.11620
+[63]    train-mlogloss:1.07490  eval-mlogloss:1.11491
+[64]    train-mlogloss:1.07326  eval-mlogloss:1.11365
+[65]    train-mlogloss:1.07174  eval-mlogloss:1.11257
+[66]    train-mlogloss:1.07017  eval-mlogloss:1.11150
+[67]    train-mlogloss:1.06875  eval-mlogloss:1.11046
+[68]    train-mlogloss:1.06726  eval-mlogloss:1.10943
+[69]    train-mlogloss:1.06587  eval-mlogloss:1.10842
+[70]    train-mlogloss:1.06443  eval-mlogloss:1.10761
+[71]    train-mlogloss:1.06320  eval-mlogloss:1.10675
+[72]    train-mlogloss:1.06210  eval-mlogloss:1.10597
+[73]    train-mlogloss:1.06084  eval-mlogloss:1.10515
+[74]    train-mlogloss:1.05970  eval-mlogloss:1.10451
+[75]    train-mlogloss:1.05853  eval-mlogloss:1.10374
+[76]    train-mlogloss:1.05740  eval-mlogloss:1.10305
+[77]    train-mlogloss:1.05628  eval-mlogloss:1.10243
+[78]    train-mlogloss:1.05520  eval-mlogloss:1.10186
+[79]    train-mlogloss:1.05409  eval-mlogloss:1.10132
+[80]    train-mlogloss:1.05311  eval-mlogloss:1.10074
+[81]    train-mlogloss:1.05214  eval-mlogloss:1.10026
+[82]    train-mlogloss:1.05108  eval-mlogloss:1.09970
+[83]    train-mlogloss:1.05016  eval-mlogloss:1.09912
+[84]    train-mlogloss:1.04908  eval-mlogloss:1.09859
+[85]    train-mlogloss:1.04827  eval-mlogloss:1.09812
+[86]    train-mlogloss:1.04739  eval-mlogloss:1.09769
+[87]    train-mlogloss:1.04654  eval-mlogloss:1.09727
+[88]    train-mlogloss:1.04570  eval-mlogloss:1.09689
+[89]    train-mlogloss:1.04478  eval-mlogloss:1.09649
+[90]    train-mlogloss:1.04391  eval-mlogloss:1.09613
+[91]    train-mlogloss:1.04309  eval-mlogloss:1.09579
+[92]    train-mlogloss:1.04230  eval-mlogloss:1.09548
+[93]    train-mlogloss:1.04152  eval-mlogloss:1.09519
+[94]    train-mlogloss:1.04072  eval-mlogloss:1.09484
+[95]    train-mlogloss:1.04003  eval-mlogloss:1.09456
+[96]    train-mlogloss:1.03926  eval-mlogloss:1.09429
+[97]    train-mlogloss:1.03849  eval-mlogloss:1.09404
+[98]    train-mlogloss:1.03778  eval-mlogloss:1.09376
+[99]    train-mlogloss:1.03714  eval-mlogloss:1.09352
+[100]   train-mlogloss:1.03645  eval-mlogloss:1.09329
+[101]   train-mlogloss:1.03578  eval-mlogloss:1.09307
+[102]   train-mlogloss:1.03522  eval-mlogloss:1.09283
+[103]   train-mlogloss:1.03463  eval-mlogloss:1.09256
+[104]   train-mlogloss:1.03393  eval-mlogloss:1.09233
+[105]   train-mlogloss:1.03315  eval-mlogloss:1.09210
+[106]   train-mlogloss:1.03244  eval-mlogloss:1.09192
+[107]   train-mlogloss:1.03189  eval-mlogloss:1.09173
+[108]   train-mlogloss:1.03125  eval-mlogloss:1.09155
+[109]   train-mlogloss:1.03053  eval-mlogloss:1.09139
+[110]   train-mlogloss:1.02985  eval-mlogloss:1.09124
+[111]   train-mlogloss:1.02925  eval-mlogloss:1.09107
+[112]   train-mlogloss:1.02862  eval-mlogloss:1.09089
+[113]   train-mlogloss:1.02805  eval-mlogloss:1.09078
+[114]   train-mlogloss:1.02734  eval-mlogloss:1.09064
+[115]   train-mlogloss:1.02655  eval-mlogloss:1.09049
+[116]   train-mlogloss:1.02593  eval-mlogloss:1.09034
+[117]   train-mlogloss:1.02528  eval-mlogloss:1.09021
+[118]   train-mlogloss:1.02473  eval-mlogloss:1.09011
+[119]   train-mlogloss:1.02409  eval-mlogloss:1.09003
+[120]   train-mlogloss:1.02350  eval-mlogloss:1.08995
+[121]   train-mlogloss:1.02297  eval-mlogloss:1.08986
+[122]   train-mlogloss:1.02245  eval-mlogloss:1.08976
+[123]   train-mlogloss:1.02182  eval-mlogloss:1.08969
+[124]   train-mlogloss:1.02116  eval-mlogloss:1.08958
+[125]   train-mlogloss:1.02049  eval-mlogloss:1.08951
+[126]   train-mlogloss:1.01983  eval-mlogloss:1.08939
+[127]   train-mlogloss:1.01928  eval-mlogloss:1.08928
+[128]   train-mlogloss:1.01866  eval-mlogloss:1.08921
+[129]   train-mlogloss:1.01810  eval-mlogloss:1.08906
+[130]   train-mlogloss:1.01736  eval-mlogloss:1.08893
+[131]   train-mlogloss:1.01683  eval-mlogloss:1.08883
+[132]   train-mlogloss:1.01634  eval-mlogloss:1.08878
+[133]   train-mlogloss:1.01579  eval-mlogloss:1.08873
+[134]   train-mlogloss:1.01526  eval-mlogloss:1.08865
+[135]   train-mlogloss:1.01460  eval-mlogloss:1.08852
+[136]   train-mlogloss:1.01403  eval-mlogloss:1.08848
+[137]   train-mlogloss:1.01352  eval-mlogloss:1.08843
+[138]   train-mlogloss:1.01279  eval-mlogloss:1.08834
+[139]   train-mlogloss:1.01231  eval-mlogloss:1.08829
+[140]   train-mlogloss:1.01172  eval-mlogloss:1.08824
+[141]   train-mlogloss:1.01118  eval-mlogloss:1.08820
+[142]   train-mlogloss:1.01062  eval-mlogloss:1.08812
+[143]   train-mlogloss:1.01010  eval-mlogloss:1.08803
+[144]   train-mlogloss:1.00950  eval-mlogloss:1.08799
+[145]   train-mlogloss:1.00900  eval-mlogloss:1.08794
+[146]   train-mlogloss:1.00853  eval-mlogloss:1.08789
+[147]   train-mlogloss:1.00807  eval-mlogloss:1.08784
+[148]   train-mlogloss:1.00755  eval-mlogloss:1.08781
+[149]   train-mlogloss:1.00691  eval-mlogloss:1.08776
+[150]   train-mlogloss:1.00629  eval-mlogloss:1.08774
+[151]   train-mlogloss:1.00562  eval-mlogloss:1.08766
+[152]   train-mlogloss:1.00517  eval-mlogloss:1.08763
+[153]   train-mlogloss:1.00449  eval-mlogloss:1.08754
+[154]   train-mlogloss:1.00404  eval-mlogloss:1.08752
+[155]   train-mlogloss:1.00352  eval-mlogloss:1.08747
+[156]   train-mlogloss:1.00294  eval-mlogloss:1.08742
+[157]   train-mlogloss:1.00235  eval-mlogloss:1.08735
+[158]   train-mlogloss:1.00190  eval-mlogloss:1.08737
+[159]   train-mlogloss:1.00144  eval-mlogloss:1.08731
+[160]   train-mlogloss:1.00084  eval-mlogloss:1.08728
+[161]   train-mlogloss:1.00024  eval-mlogloss:1.08726
+[162]   train-mlogloss:0.99963  eval-mlogloss:1.08723
+[163]   train-mlogloss:0.99917  eval-mlogloss:1.08726
+[164]   train-mlogloss:0.99848  eval-mlogloss:1.08727
+[165]   train-mlogloss:0.99792  eval-mlogloss:1.08723
+[166]   train-mlogloss:0.99743  eval-mlogloss:1.08721
+[167]   train-mlogloss:0.99683  eval-mlogloss:1.08718
+[168]   train-mlogloss:0.99622  eval-mlogloss:1.08719
+[169]   train-mlogloss:0.99559  eval-mlogloss:1.08715
+[170]   train-mlogloss:0.99502  eval-mlogloss:1.08717
+[171]   train-mlogloss:0.99459  eval-mlogloss:1.08714
+[172]   train-mlogloss:0.99398  eval-mlogloss:1.08707
+[173]   train-mlogloss:0.99335  eval-mlogloss:1.08699
+[174]   train-mlogloss:0.99277  eval-mlogloss:1.08697
+[175]   train-mlogloss:0.99213  eval-mlogloss:1.08695
+[176]   train-mlogloss:0.99156  eval-mlogloss:1.08695
+[177]   train-mlogloss:0.99105  eval-mlogloss:1.08690
+[178]   train-mlogloss:0.99045  eval-mlogloss:1.08688
+[179]   train-mlogloss:0.98992  eval-mlogloss:1.08686
+[180]   train-mlogloss:0.98923  eval-mlogloss:1.08683
+[181]   train-mlogloss:0.98876  eval-mlogloss:1.08680
+[182]   train-mlogloss:0.98814  eval-mlogloss:1.08679
+[183]   train-mlogloss:0.98757  eval-mlogloss:1.08675
+[184]   train-mlogloss:0.98707  eval-mlogloss:1.08678
+[185]   train-mlogloss:0.98656  eval-mlogloss:1.08680
+[186]   train-mlogloss:0.98600  eval-mlogloss:1.08678
+[187]   train-mlogloss:0.98555  eval-mlogloss:1.08679
+[188]   train-mlogloss:0.98491  eval-mlogloss:1.08678
+[189]   train-mlogloss:0.98429  eval-mlogloss:1.08675
+[190]   train-mlogloss:0.98373  eval-mlogloss:1.08672
+[191]   train-mlogloss:0.98317  eval-mlogloss:1.08676
+[192]   train-mlogloss:0.98268  eval-mlogloss:1.08670
+[193]   train-mlogloss:0.98213  eval-mlogloss:1.08667
+[194]   train-mlogloss:0.98147  eval-mlogloss:1.08663
+[195]   train-mlogloss:0.98090  eval-mlogloss:1.08659
+[196]   train-mlogloss:0.98040  eval-mlogloss:1.08655
+[197]   train-mlogloss:0.97987  eval-mlogloss:1.08656
+[198]   train-mlogloss:0.97937  eval-mlogloss:1.08653
+[199]   train-mlogloss:0.97892  eval-mlogloss:1.08649
+[200]   train-mlogloss:0.97848  eval-mlogloss:1.08648
+[201]   train-mlogloss:0.97792  eval-mlogloss:1.08652
+[202]   train-mlogloss:0.97742  eval-mlogloss:1.08652
+[203]   train-mlogloss:0.97700  eval-mlogloss:1.08652
+[204]   train-mlogloss:0.97654  eval-mlogloss:1.08652
+[205]   train-mlogloss:0.97612  eval-mlogloss:1.08653
+[206]   train-mlogloss:0.97572  eval-mlogloss:1.08654
+[207]   train-mlogloss:0.97514  eval-mlogloss:1.08648
+[208]   train-mlogloss:0.97472  eval-mlogloss:1.08645
+[209]   train-mlogloss:0.97415  eval-mlogloss:1.08638
+[210]   train-mlogloss:0.97366  eval-mlogloss:1.08635
+[211]   train-mlogloss:0.97321  eval-mlogloss:1.08637
+[212]   train-mlogloss:0.97274  eval-mlogloss:1.08634
+[213]   train-mlogloss:0.97227  eval-mlogloss:1.08636
+[214]   train-mlogloss:0.97182  eval-mlogloss:1.08637
+[215]   train-mlogloss:0.97142  eval-mlogloss:1.08640
+[216]   train-mlogloss:0.97105  eval-mlogloss:1.08637
+[217]   train-mlogloss:0.97060  eval-mlogloss:1.08630
+[218]   train-mlogloss:0.97028  eval-mlogloss:1.08634
+[219]   train-mlogloss:0.96980  eval-mlogloss:1.08627
+[220]   train-mlogloss:0.96934  eval-mlogloss:1.08625
+[221]   train-mlogloss:0.96883  eval-mlogloss:1.08628
+[222]   train-mlogloss:0.96837  eval-mlogloss:1.08630
+[223]   train-mlogloss:0.96800  eval-mlogloss:1.08635
+[224]   train-mlogloss:0.96752  eval-mlogloss:1.08638
+[225]   train-mlogloss:0.96716  eval-mlogloss:1.08639
+[226]   train-mlogloss:0.96686  eval-mlogloss:1.08639
+[227]   train-mlogloss:0.96648  eval-mlogloss:1.08641
+[228]   train-mlogloss:0.96591  eval-mlogloss:1.08638
+[229]   train-mlogloss:0.96536  eval-mlogloss:1.08637
+[230]   train-mlogloss:0.96486  eval-mlogloss:1.08638
+[231]   train-mlogloss:0.96440  eval-mlogloss:1.08636
+[232]   train-mlogloss:0.96395  eval-mlogloss:1.08633
+[233]   train-mlogloss:0.96350  eval-mlogloss:1.08635
+[234]   train-mlogloss:0.96280  eval-mlogloss:1.08639
+[235]   train-mlogloss:0.96212  eval-mlogloss:1.08630
+[236]   train-mlogloss:0.96175  eval-mlogloss:1.08636
+[237]   train-mlogloss:0.96135  eval-mlogloss:1.08637
+[238]   train-mlogloss:0.96081  eval-mlogloss:1.08640
+[239]   train-mlogloss:0.96025  eval-mlogloss:1.08643
+[240]   train-mlogloss:0.95976  eval-mlogloss:1.08641</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        for (let i = 0; i < 2; i++) {
+          container.appendChild(note.children[i].cloneNode(true));
+        }
+        return container.innerHTML
+      } else {
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
