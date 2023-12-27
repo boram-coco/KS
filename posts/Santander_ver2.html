@@ -192,30 +192,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="import" class="level1">
 <h1>import</h1>
-<div id="22df14af-3e18-4b08-9a0e-ef835fef05a7" class="cell" data-execution_count="47">
+<div id="22df14af-3e18-4b08-9a0e-ef835fef05a7" class="cell" data-execution_count="58">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xgboost <span class="im">as</span> xgb</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#---#</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> autogluon.multimodal <span class="im">import</span> MultiModalPredictor <span class="co"># from autogluon.tabular import TabularPredictor</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#---#</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">'ignore'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pickle</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#---#</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> autogluon.multimodal <span class="im">import</span> MultiModalPredictor <span class="co"># from autogluon.tabular import TabularPredictor</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#---#</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">'ignore'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="data" class="level1">
 <h1>data</h1>
-<div id="e769042f-bebe-4a55-84ba-279e14f80851" class="cell" data-execution_count="1">
+<div id="e769042f-bebe-4a55-84ba-279e14f80851" class="cell" data-execution_count="59">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>kaggle competitions download <span class="op">-</span>c santander<span class="op">-</span>product<span class="op">-</span>recommendation</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Warning: Your Kaggle API key is readable by other users on this system! To fix this, you can run 'chmod 600 /home/coco/.kaggle/kaggle.json'
 santander-product-recommendation.zip: Skipping, found more recently modified local copy (use --force to force download)</code></pre>
 </div>
 </div>
-<div id="ee0d1402-17ac-47a1-8cd3-5c0bfbb3d3e4" class="cell" data-execution_count="2">
+<div id="ee0d1402-17ac-47a1-8cd3-5c0bfbb3d3e4" class="cell" data-execution_count="60">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>unzip santander<span class="op">-</span>product<span class="op">-</span>recommendation.<span class="bu">zip</span> <span class="op">-</span>d data </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Archive:  santander-product-recommendation.zip
@@ -224,21 +225,21 @@ santander-product-recommendation.zip: Skipping, found more recently modified loc
   inflating: data/train_ver2.csv.zip  </code></pre>
 </div>
 </div>
-<div id="e199ffbd-4aa9-42a0-8c16-40096a105643" class="cell" data-tags="[]" data-execution_count="5">
+<div id="e199ffbd-4aa9-42a0-8c16-40096a105643" class="cell" data-tags="[]" data-execution_count="61">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df_train <span class="op">=</span> pd.read_csv(<span class="st">'data/train_ver2.csv.zip'</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df_test <span class="op">=</span> pd.read_csv(<span class="st">'data/test_ver2.csv.zip'</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>sample_submission <span class="op">=</span> pd.read_csv(<span class="st">'data/sample_submission.csv.zip'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="236f1b84-1213-478d-bcfa-e42607ae959f" class="cell" data-tags="[]" data-execution_count="6">
+<div id="236f1b84-1213-478d-bcfa-e42607ae959f" class="cell" data-tags="[]" data-execution_count="62">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>rm <span class="op">-</span>rf data</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>rm nlp<span class="op">-</span>getting<span class="op">-</span>started.<span class="bu">zip</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>rm: cannot remove 'nlp-getting-started.zip': No such file or directory</code></pre>
 </div>
 </div>
-<div id="025c3534-0113-411c-be8e-314b4c25b62a" class="cell" data-execution_count="7">
+<div id="025c3534-0113-411c-be8e-314b4c25b62a" class="cell" data-execution_count="63">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df_train.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="63">
 <div>
 
 
@@ -400,14 +401,14 @@ santander-product-recommendation.zip: Skipping, found more recently modified loc
 </section>
 <section id="데이터전처리" class="level1">
 <h1>데이터전처리</h1>
-<div id="edab8e34-0643-4db7-a24d-7155028ae748" class="cell" data-execution_count="8">
+<div id="edab8e34-0643-4db7-a24d-7155028ae748" class="cell" data-execution_count="64">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>prods <span class="op">=</span> df_train.columns[<span class="dv">24</span>:].tolist()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="80d8ead4-34ca-4a52-a5b1-5dce261d4414" class="cell" data-execution_count="9">
+<div id="80d8ead4-34ca-4a52-a5b1-5dce261d4414" class="cell" data-execution_count="65">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df_train[prods] <span class="op">=</span> df_train[prods].fillna(<span class="fl">0.0</span>).astype(np.int8)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><code>-</code> 24개 제품 중 하나도 보유하지 않는 고객 데이터 제거</p>
-<div id="62300ca1-bb0d-404b-9f34-8ef22a2ad339" class="cell" data-execution_count="10">
+<div id="62300ca1-bb0d-404b-9f34-8ef22a2ad339" class="cell" data-execution_count="66">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>no_product <span class="op">=</span> df_train[prods].<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>) <span class="op">==</span> <span class="dv">0</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>df_train <span class="op">=</span> df_train[<span class="op">~</span>no_product]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -415,21 +416,21 @@ santander-product-recommendation.zip: Skipping, found more recently modified loc
 <p><code>df_train[~변수명]</code>을 사용하면 제거!</p>
 </blockquote>
 <p><code>-</code> tr/ts 합치기</p>
-<div id="631ac82f-76cd-4c49-98dc-b4f6c69624bd" class="cell" data-execution_count="11">
+<div id="631ac82f-76cd-4c49-98dc-b4f6c69624bd" class="cell" data-execution_count="67">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> df_train.columns[<span class="dv">24</span>:]:</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    df_test[col] <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.concat([df_train,df_test], axis<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="7776eaf8-44a7-4fce-989c-1bf835b06b6d" class="cell" data-execution_count="12">
+<div id="7776eaf8-44a7-4fce-989c-1bf835b06b6d" class="cell" data-execution_count="68">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>features <span class="op">=</span> []</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="f3e3deca-c3b1-4ad8-ac40-47d789581091" class="cell" data-execution_count="13">
+<div id="f3e3deca-c3b1-4ad8-ac40-47d789581091" class="cell" data-execution_count="69">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>categorical_cols <span class="op">=</span> [<span class="st">'ind_empleado'</span>, <span class="st">'pais_residencia'</span>, <span class="st">'sexo'</span>, <span class="st">'tiprel_1mes'</span>, <span class="st">'indresi'</span>, <span class="st">'indext'</span>, <span class="st">'conyuemp'</span>, <span class="st">'canal_entrada'</span>, <span class="st">'indfall'</span>, <span class="st">'tipodom'</span>, <span class="st">'nomprov'</span>, <span class="st">'segmento'</span>]</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> categorical_cols:</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    df[col], _ <span class="op">=</span> df[col].factorize(na_sentinel<span class="op">=-</span><span class="dv">99</span>)</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>features <span class="op">+=</span> categorical_cols</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="ee1687e1-c38e-4e01-a079-0f8d01883ed9" class="cell" data-execution_count="14">
+<div id="ee1687e1-c38e-4e01-a079-0f8d01883ed9" class="cell" data-execution_count="70">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'age'</span>].replace(<span class="st">' NA'</span>, <span class="op">-</span><span class="dv">99</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'age'</span>] <span class="op">=</span> df[<span class="st">'age'</span>].astype(np.int8)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -444,74 +445,74 @@ santander-product-recommendation.zip: Skipping, found more recently modified loc
 <span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'indrel_1mes'</span>].fillna(<span class="op">-</span><span class="dv">99</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'indrel_1mes'</span>] <span class="op">=</span> df[<span class="st">'indrel_1mes'</span>].astype(<span class="bu">float</span>).astype(np.int8)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="4c53d8f4-405c-4339-ae3c-8a178d29d77a" class="cell" data-execution_count="15">
+<div id="4c53d8f4-405c-4339-ae3c-8a178d29d77a" class="cell" data-execution_count="71">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>features <span class="op">+=</span> [<span class="st">'age'</span>,<span class="st">'antiguedad'</span>,<span class="st">'renta'</span>,<span class="st">'ind_nuevo'</span>,<span class="st">'indrel'</span>,<span class="st">'indrel_1mes'</span>,<span class="st">'ind_actividad_cliente'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><code>-</code> 날짜 변수 월/연 추출</p>
-<div id="9faecaa8-607c-422e-8821-95025648adb9" class="cell" data-execution_count="18">
+<div id="9faecaa8-607c-422e-8821-95025648adb9" class="cell" data-execution_count="72">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'fecha_alta_month'</span>] <span class="op">=</span>  df[<span class="st">'fecha_alta'</span>].<span class="bu">map</span>(<span class="kw">lambda</span> x: <span class="fl">0.0</span> <span class="cf">if</span> x.__class__ <span class="kw">is</span> <span class="bu">float</span> <span class="cf">else</span> <span class="bu">float</span>(x.split(<span class="st">'-'</span>)[<span class="dv">1</span>])).astype(np.int8)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="2a5ab032-0692-4347-8d78-a2a0d1b33f94" class="cell" data-execution_count="19">
+<div id="2a5ab032-0692-4347-8d78-a2a0d1b33f94" class="cell" data-execution_count="73">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'fecah_alta_year'</span>] <span class="op">=</span> df[<span class="st">'fecha_alta'</span>].<span class="bu">map</span>(<span class="kw">lambda</span> x:<span class="fl">0.0</span> <span class="cf">if</span> x.__class__ <span class="kw">is</span> <span class="bu">float</span> <span class="cf">else</span> <span class="bu">float</span>(x.split(<span class="st">'-'</span>)[<span class="dv">0</span>])).astype(np.int16)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="a2130a57-ea35-4735-9150-8b49c38b55a1" class="cell" data-execution_count="20">
+<div id="a2130a57-ea35-4735-9150-8b49c38b55a1" class="cell" data-execution_count="74">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>features <span class="op">+=</span> [<span class="st">'fecha_alta_month'</span>,<span class="st">'fecah_alta_year'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="663346f7-2608-4c06-ab63-058db91b6904" class="cell" data-execution_count="21">
+<div id="663346f7-2608-4c06-ab63-058db91b6904" class="cell" data-execution_count="75">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'ult_fec_cli_1t_month'</span>] <span class="op">=</span> df[<span class="st">'ult_fec_cli_1t'</span>].<span class="bu">map</span>(<span class="kw">lambda</span> x: <span class="fl">0.0</span> <span class="cf">if</span> x.__class__ <span class="kw">is</span> <span class="bu">float</span> <span class="cf">else</span> <span class="bu">float</span>(x.split(<span class="st">'-'</span>)[<span class="dv">1</span>])).astype(np.int8)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'ult_fec_cli_1t_year'</span>] <span class="op">=</span> df[<span class="st">'ult_fec_cli_1t'</span>].<span class="bu">map</span>(<span class="kw">lambda</span> x: <span class="fl">0.0</span> <span class="cf">if</span> x.__class__ <span class="kw">is</span> <span class="bu">float</span> <span class="cf">else</span> <span class="bu">float</span>(x.split(<span class="st">'-'</span>)[<span class="dv">0</span>])).astype(np.int16)</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>features <span class="op">+=</span> [<span class="st">'ult_fec_cli_1t_month'</span>, <span class="st">'ult_fec_cli_1t_year'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><code>-</code> 그 외 변수 결측값: -99</p>
-<div id="2fa7a80f-ff5b-4312-a5c0-87a5641d7949" class="cell" data-execution_count="23">
+<div id="2fa7a80f-ff5b-4312-a5c0-87a5641d7949" class="cell" data-execution_count="76">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>df.fillna(<span class="op">-</span><span class="dv">99</span>, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><code>-</code> 날짜 숫자로 변환</p>
 <ul>
 <li><code>2015-01-28</code>:1, <code>2015-02-28</code>:2, …, <code>2016-06-28</code>:18</li>
 </ul>
-<div id="b3d759af-67f8-4aa0-9b82-cdeb97accae7" class="cell" data-execution_count="27">
+<div id="b3d759af-67f8-4aa0-9b82-cdeb97accae7" class="cell" data-execution_count="77">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> date_to_int(str_date):</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    Y, M, D <span class="op">=</span> [<span class="bu">int</span>(a) <span class="cf">for</span> a <span class="kw">in</span> str_date.strip().split(<span class="st">"-"</span>)]</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    int_date <span class="op">=</span> (<span class="bu">int</span>(Y) <span class="op">-</span> <span class="dv">2015</span>) <span class="op">*</span> <span class="dv">12</span> <span class="op">+</span> <span class="bu">int</span>(M)</span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> int_date</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="c6ff817b-4058-4601-a3c8-df9c36d71fc3" class="cell" data-execution_count="28">
+<div id="c6ff817b-4058-4601-a3c8-df9c36d71fc3" class="cell" data-execution_count="78">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'int_date'</span>] <span class="op">=</span> df[<span class="st">'fecha_dato'</span>].<span class="bu">map</span>(date_to_int).astype(np.int8)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="e7a0e912-eea2-4c8f-b465-930ed7cca748" class="cell" data-execution_count="29">
+<div id="e7a0e912-eea2-4c8f-b465-930ed7cca748" class="cell" data-execution_count="79">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>df_lag <span class="op">=</span> df.copy()</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>df_lag.columns <span class="op">=</span> [col <span class="op">+</span> <span class="st">'_prev'</span> <span class="cf">if</span> col <span class="kw">not</span> <span class="kw">in</span> [<span class="st">'ncodpers'</span>, <span class="st">'int_date'</span>] <span class="cf">else</span> col <span class="cf">for</span> col <span class="kw">in</span> df.columns]</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>df_lag[<span class="st">'int_date'</span>] <span class="op">+=</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="c9963022-6ea5-4dd0-bab0-b3eb83f4ff95" class="cell" data-execution_count="30">
+<div id="c9963022-6ea5-4dd0-bab0-b3eb83f4ff95" class="cell" data-execution_count="80">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>df_trn <span class="op">=</span> df.merge(df_lag, on<span class="op">=</span>[<span class="st">'ncodpers'</span>, <span class="st">'int_date'</span>], how<span class="op">=</span><span class="st">'left'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><code>-</code> 저번 달 제품 정보가 존재하지 않으면 0으로 대체</p>
-<div id="729a7bcc-ad01-4384-8e15-220e2e803df1" class="cell" data-execution_count="34">
+<div id="729a7bcc-ad01-4384-8e15-220e2e803df1" class="cell" data-execution_count="81">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> prod <span class="kw">in</span> prods:</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    prev <span class="op">=</span> prod <span class="op">+</span> <span class="st">'_prev'</span></span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    df_trn[prev].fillna(<span class="dv">0</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>df_trn.fillna(<span class="op">-</span><span class="dv">99</span>, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><code>-</code> lag-1 변수 추가</p>
-<div id="f76d1298-97f4-432a-910b-dfac2c10250f" class="cell" data-execution_count="35">
+<div id="f76d1298-97f4-432a-910b-dfac2c10250f" class="cell" data-execution_count="82">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>features <span class="op">+=</span> [feature <span class="op">+</span> <span class="st">'_prev'</span> <span class="cf">for</span> feature <span class="kw">in</span> features]</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>features <span class="op">+=</span> [prod <span class="op">+</span> <span class="st">'_prev'</span> <span class="cf">for</span> prod <span class="kw">in</span> prods]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="trtestval" class="level1">
 <h1>tr/test/val</h1>
-<div id="0dfb9d72-c463-478a-8ce0-cb2f4264e49e" class="cell" data-execution_count="36">
+<div id="0dfb9d72-c463-478a-8ce0-cb2f4264e49e" class="cell" data-execution_count="83">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>use_dates <span class="op">=</span> [<span class="st">'2016-01-28'</span>, <span class="st">'2016-02-28'</span>, <span class="st">'2016-03-28'</span>, <span class="st">'2016-04-28'</span>, <span class="st">'2016-05-28'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="1abdb5b3-04d1-4b80-b368-d0e14a2211e5" class="cell" data-execution_count="38">
+<div id="1abdb5b3-04d1-4b80-b368-d0e14a2211e5" class="cell" data-execution_count="84">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>trn <span class="op">=</span> df_trn[df_trn[<span class="st">'fecha_dato'</span>].isin(use_dates)]</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>tst <span class="op">=</span> df_trn[df_trn[<span class="st">'fecha_dato'</span>] <span class="op">==</span> <span class="st">'2016-06-28'</span>]</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="kw">del</span> df_trn</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><code>-</code> 훈련 데이터에 신규 구매 건수 추출</p>
-<div id="2ebdf58f-958a-43d8-b8a0-5b3f45d4f33a" class="cell" data-execution_count="40">
+<div id="2ebdf58f-958a-43d8-b8a0-5b3f45d4f33a" class="cell" data-execution_count="85">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> []</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> []</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, prod <span class="kw">in</span> <span class="bu">enumerate</span>(prods):</span>
@@ -524,7 +525,7 @@ santander-product-recommendation.zip: Skipping, found more recently modified loc
 <span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> np.hstack(Y)</span>
 <span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>XY[<span class="st">'y'</span>] <span class="op">=</span> Y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="06bd0ecd-7f69-4cc0-9d9a-4c74d16483dd" class="cell" data-execution_count="43">
+<div id="06bd0ecd-7f69-4cc0-9d9a-4c74d16483dd" class="cell" data-execution_count="86">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>vld_date <span class="op">=</span> <span class="st">'2016-05-28'</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>XY_trn <span class="op">=</span> XY[XY[<span class="st">'fecha_dato'</span>] <span class="op">!=</span> vld_date]</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>XY_vld <span class="op">=</span> XY[XY[<span class="st">'fecha_dato'</span>] <span class="op">==</span> vld_date]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -540,7 +541,7 @@ santander-product-recommendation.zip: Skipping, found more recently modified loc
 <p><code>colsample_bylevel</code>: 트리의 레벨 별 훈련 데이터의 변수 샘플링해주는 비율</p>
 </blockquote>
 <p><code>-</code> parameter 설정</p>
-<div id="5325d833-482e-4cf4-8493-ec8cb48d23d7" class="cell" data-execution_count="45">
+<div id="5325d833-482e-4cf4-8493-ec8cb48d23d7" class="cell" data-execution_count="87">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>param <span class="op">=</span> {</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'booster'</span>: <span class="st">'gbtree'</span>,</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'max_depth'</span>: <span class="dv">8</span>,</span>
@@ -556,325 +557,21 @@ santander-product-recommendation.zip: Skipping, found more recently modified loc
 <span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'seed'</span>: <span class="dv">2018</span>,</span>
 <span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="5060813c-9f25-4d3c-bcfc-30993b7d1a75" class="cell" data-execution_count="53">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>XY_trn.ma</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="53">
-<div>
-
-
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">fecha_dato</th>
-<th data-quarto-table-cell-role="th">ncodpers</th>
-<th data-quarto-table-cell-role="th">ind_empleado</th>
-<th data-quarto-table-cell-role="th">pais_residencia</th>
-<th data-quarto-table-cell-role="th">sexo</th>
-<th data-quarto-table-cell-role="th">age</th>
-<th data-quarto-table-cell-role="th">fecha_alta</th>
-<th data-quarto-table-cell-role="th">ind_nuevo</th>
-<th data-quarto-table-cell-role="th">antiguedad</th>
-<th data-quarto-table-cell-role="th">indrel</th>
-<th data-quarto-table-cell-role="th">...</th>
-<th data-quarto-table-cell-role="th">ind_valo_fin_ult1_prev</th>
-<th data-quarto-table-cell-role="th">ind_viv_fin_ult1_prev</th>
-<th data-quarto-table-cell-role="th">ind_nomina_ult1_prev</th>
-<th data-quarto-table-cell-role="th">ind_nom_pens_ult1_prev</th>
-<th data-quarto-table-cell-role="th">ind_recibo_ult1_prev</th>
-<th data-quarto-table-cell-role="th">fecha_alta_month_prev</th>
-<th data-quarto-table-cell-role="th">fecah_alta_year_prev</th>
-<th data-quarto-table-cell-role="th">ult_fec_cli_1t_month_prev</th>
-<th data-quarto-table-cell-role="th">ult_fec_cli_1t_year_prev</th>
-<th data-quarto-table-cell-role="th">y</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">7658069</td>
-<td>2016-01-28</td>
-<td>1474324</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>43</td>
-<td>2015-10-09</td>
-<td>1.0</td>
-<td>3</td>
-<td>1.0</td>
-<td>...</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>1.0</td>
-<td>10.0</td>
-<td>2015.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>1</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">7628180</td>
-<td>2016-01-28</td>
-<td>1432311</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>26</td>
-<td>2015-08-07</td>
-<td>1.0</td>
-<td>5</td>
-<td>1.0</td>
-<td>...</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>-99.0</td>
-<td>-99.0</td>
-<td>-99.0</td>
-<td>-99.0</td>
-<td>2</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">7628198</td>
-<td>2016-01-28</td>
-<td>1432232</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>33</td>
-<td>2015-08-07</td>
-<td>0.0</td>
-<td>19</td>
-<td>1.0</td>
-<td>...</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>-99.0</td>
-<td>-99.0</td>
-<td>-99.0</td>
-<td>-99.0</td>
-<td>2</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">7628482</td>
-<td>2016-01-28</td>
-<td>1432080</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>23</td>
-<td>2015-08-07</td>
-<td>1.0</td>
-<td>5</td>
-<td>1.0</td>
-<td>...</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>-99.0</td>
-<td>-99.0</td>
-<td>-99.0</td>
-<td>-99.0</td>
-<td>2</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">7628692</td>
-<td>2016-01-28</td>
-<td>1432952</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>77</td>
-<td>2015-08-10</td>
-<td>1.0</td>
-<td>5</td>
-<td>1.0</td>
-<td>...</td>
-<td>1.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>8.0</td>
-<td>2015.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>2</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">10394466</td>
-<td>2016-04-28</td>
-<td>1297367</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>59</td>
-<td>2014-08-18</td>
-<td>0.0</td>
-<td>20</td>
-<td>1.0</td>
-<td>...</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>8.0</td>
-<td>2014.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>23</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">10394481</td>
-<td>2016-04-28</td>
-<td>1297315</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>39</td>
-<td>2014-08-18</td>
-<td>0.0</td>
-<td>20</td>
-<td>1.0</td>
-<td>...</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>8.0</td>
-<td>2014.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>23</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">10394487</td>
-<td>2016-04-28</td>
-<td>1297332</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>30</td>
-<td>2014-08-18</td>
-<td>0.0</td>
-<td>20</td>
-<td>1.0</td>
-<td>...</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>8.0</td>
-<td>2014.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>23</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">10394502</td>
-<td>2016-04-28</td>
-<td>1297428</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>35</td>
-<td>2014-08-18</td>
-<td>0.0</td>
-<td>25</td>
-<td>1.0</td>
-<td>...</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>8.0</td>
-<td>2014.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>23</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">10394529</td>
-<td>2016-04-28</td>
-<td>1297412</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>34</td>
-<td>2014-08-18</td>
-<td>0.0</td>
-<td>20</td>
-<td>1.0</td>
-<td>...</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>8.0</td>
-<td>2014.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>23</td>
-</tr>
-</tbody>
-</table>
-
-<p>161137 rows × 105 columns</p>
+<div id="07cdddf8-fae2-4c8f-8166-e37027ff1762" class="cell" data-execution_count="90">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>X_trn <span class="op">=</span> XY_trn[features].to_numpy()</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>Y_trn <span class="op">=</span> XY_trn[<span class="st">'y'</span>].to_numpy()</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>dtrn <span class="op">=</span> xgb.DMatrix(X_trn, label<span class="op">=</span>Y_trn, feature_names<span class="op">=</span>features)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div id="a71dc4a3-8978-4eae-824f-fc92ba2c7912" class="cell" data-execution_count="93">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>X_vld <span class="op">=</span> XY_vld[features].to_numpy()</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>Y_vld <span class="op">=</span> XY_vld[<span class="st">'y'</span>].to_numpy()</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>dvld <span class="op">=</span> xgb.DMatrix(X_vld, label<span class="op">=</span>Y_vld, feature_names<span class="op">=</span>features)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<div id="07cdddf8-fae2-4c8f-8166-e37027ff1762" class="cell" data-execution_count="54">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>X_trn <span class="op">=</span> XY_trn[features].values</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>Y_trn <span class="op">=</span> XY_trn[<span class="st">'y'</span>].values</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>dtrn <span class="op">=</span> xgb.DMatrix(X_trn, label<span class="op">=</span>Y_trn, feature_names<span class="op">=</span>features)</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>X_vld <span class="op">=</span> XY_vld[features].values</span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>Y_vld <span class="op">=</span> XY_vld[<span class="st">'y'</span>].values</span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>dvld <span class="op">=</span> xgb.DMatrix(X_vld, label<span class="op">=</span>Y_vld, feature_names<span class="op">=</span>features)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="075e12ff-4998-4fbd-977b-b966e7613dc9" class="cell" data-execution_count="55">
+<div id="075e12ff-4998-4fbd-977b-b966e7613dc9" class="cell" data-execution_count="94">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>watch_list <span class="op">=</span> [(dtrn, <span class="st">'train'</span>), (dvld, <span class="st">'eval'</span>)]</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> xgb.train(param, dtrn, num_boost_round<span class="op">=</span><span class="dv">1000</span>, evals<span class="op">=</span>watch_list, early_stopping_rounds<span class="op">=</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[17:51:53] WARNING: ../src/learner.cc:767: 
+<pre><code>[17:18:26] WARNING: ../src/learner.cc:767: 
 Parameters: { "silent" } are not used.
 
 [0] train-mlogloss:2.68947  eval-mlogloss:2.70092
@@ -1120,6 +817,94 @@ Parameters: { "silent" } are not used.
 [240]   train-mlogloss:0.95976  eval-mlogloss:1.08641</code></pre>
 </div>
 </div>
+<div id="1346e4e2-ef8f-4672-ae8a-a0a032f4a5cc" class="cell" data-execution_count="97">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MAP@7 평가 척도를 위한 준비작업이다.</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 고객 식별 번호를 추출한다.</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>vld <span class="op">=</span> trn[trn[<span class="st">'fecha_dato'</span>] <span class="op">==</span> vld_date]</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>ncodpers_vld <span class="op">=</span> vld[<span class="st">'ncodpers'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="3b35ab53-3315-4fb8-88b4-43ebc865176c" class="cell" data-execution_count="99">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 검증 데이터에서 신규 구매를 구한다.</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> prod <span class="kw">in</span> prods:</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    prev <span class="op">=</span> prod <span class="op">+</span> <span class="st">'_prev'</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    padd <span class="op">=</span> prod <span class="op">+</span> <span class="st">'_add'</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    vld[padd] <span class="op">=</span> vld[prod] <span class="op">-</span> vld[prev]    </span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>add_vld <span class="op">=</span> vld[[prod <span class="op">+</span> <span class="st">'_add'</span> <span class="cf">for</span> prod <span class="kw">in</span> prods]]</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>add_vld_list <span class="op">=</span> [<span class="bu">list</span>() <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(ncodpers_vld))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 고객별 신규 구매 정답 값을 add_vld_list에 저장하고, 총 count를 count_vld에 저장한다.</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>count_vld <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ncodper <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(ncodpers_vld)):</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> prod <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(prods)):</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> add_vld[ncodper, prod] <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>            add_vld_list[ncodper].append(prod)</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>            count_vld <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 검증 데이터에서 얻을 수 있는 MAP@7 최고점을 미리 구한다. (0.042663)</span></span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mapk(add_vld_list, add_vld_list, <span class="dv">7</span>, <span class="fl">0.0</span>))</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 검증 데이터에 대한 예측 값을 구한다.</span></span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>X_vld <span class="op">=</span> vld.as_matrix(columns<span class="op">=</span>features)</span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>Y_vld <span class="op">=</span> vld.as_matrix(columns<span class="op">=</span>[<span class="st">'y'</span>])</span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a>dvld <span class="op">=</span> xgb.DMatrix(X_vld, label<span class="op">=</span>Y_vld, feature_names<span class="op">=</span>features)</span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>preds_vld <span class="op">=</span> model.predict(dvld, ntree_limit<span class="op">=</span>best_ntree_limit)</span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 저번 달에 보유한 제품은 신규 구매가 불가하기 때문에, 확률값에서 미리 1을 빼준다</span></span>
+<span id="cb40-23"><a href="#cb40-23" aria-hidden="true" tabindex="-1"></a>preds_vld <span class="op">=</span> preds_vld <span class="op">-</span> vld.as_matrix(columns<span class="op">=</span>[prod <span class="op">+</span> <span class="st">'_prev'</span> <span class="cf">for</span> prod <span class="kw">in</span> prods])</span>
+<span id="cb40-24"><a href="#cb40-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-25"><a href="#cb40-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-26"><a href="#cb40-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-27"><a href="#cb40-27" aria-hidden="true" tabindex="-1"></a><span class="co"># 검증 데이터 예측 상위 7개를 추출한다.</span></span>
+<span id="cb40-28"><a href="#cb40-28" aria-hidden="true" tabindex="-1"></a>result_vld <span class="op">=</span> []</span>
+<span id="cb40-29"><a href="#cb40-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ncodper, pred <span class="kw">in</span> <span class="bu">zip</span>(ncodpers_vld, preds_vld):</span>
+<span id="cb40-30"><a href="#cb40-30" aria-hidden="true" tabindex="-1"></a>    y_prods <span class="op">=</span> [(y,p,ip) <span class="cf">for</span> y,p,ip <span class="kw">in</span> <span class="bu">zip</span>(pred, prods, <span class="bu">range</span>(<span class="bu">len</span>(prods)))]</span>
+<span id="cb40-31"><a href="#cb40-31" aria-hidden="true" tabindex="-1"></a>    y_prods <span class="op">=</span> <span class="bu">sorted</span>(y_prods, key<span class="op">=</span><span class="kw">lambda</span> a: a[<span class="dv">0</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">7</span>]</span>
+<span id="cb40-32"><a href="#cb40-32" aria-hidden="true" tabindex="-1"></a>    result_vld.append([ip <span class="cf">for</span> y,p,ip <span class="kw">in</span> y_prods])</span>
+<span id="cb40-33"><a href="#cb40-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-34"><a href="#cb40-34" aria-hidden="true" tabindex="-1"></a><span class="co"># 검증 데이터에서의 MAP@7 점수를 구한다. (0.036466)</span></span>
+<span id="cb40-35"><a href="#cb40-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mapk(add_vld_list, result_vld, <span class="dv">7</span>, <span class="fl">0.0</span>))</span>
+<span id="cb40-36"><a href="#cb40-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-37"><a href="#cb40-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-38"><a href="#cb40-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-39"><a href="#cb40-39" aria-hidden="true" tabindex="-1"></a><span class="co"># XGBoost 모델을 전체 훈련 데이터로 재학습한다!</span></span>
+<span id="cb40-40"><a href="#cb40-40" aria-hidden="true" tabindex="-1"></a>X_all <span class="op">=</span> XY.as_matrix(columns<span class="op">=</span>features)</span>
+<span id="cb40-41"><a href="#cb40-41" aria-hidden="true" tabindex="-1"></a>Y_all <span class="op">=</span> XY.as_matrix(columns<span class="op">=</span>[<span class="st">'y'</span>])</span>
+<span id="cb40-42"><a href="#cb40-42" aria-hidden="true" tabindex="-1"></a>dall <span class="op">=</span> xgb.DMatrix(X_all, label<span class="op">=</span>Y_all, feature_names<span class="op">=</span>features)</span>
+<span id="cb40-43"><a href="#cb40-43" aria-hidden="true" tabindex="-1"></a>watch_list <span class="op">=</span> [(dall, <span class="st">'train'</span>)]</span>
+<span id="cb40-44"><a href="#cb40-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-45"><a href="#cb40-45" aria-hidden="true" tabindex="-1"></a><span class="co"># 트리 개수를 늘어난 데이터 양만큼 비례해서 증가한다.</span></span>
+<span id="cb40-46"><a href="#cb40-46" aria-hidden="true" tabindex="-1"></a>best_ntree_limit <span class="op">=</span> <span class="bu">int</span>(best_ntree_limit <span class="op">*</span> (<span class="bu">len</span>(XY_trn) <span class="op">+</span> <span class="bu">len</span>(XY_vld)) <span class="op">/</span> <span class="bu">len</span>(XY_trn))</span>
+<span id="cb40-47"><a href="#cb40-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-48"><a href="#cb40-48" aria-hidden="true" tabindex="-1"></a><span class="co"># XGBoost 모델 재학습!</span></span>
+<span id="cb40-49"><a href="#cb40-49" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> xgb.train(param, dall, num_boost_round<span class="op">=</span>best_ntree_limit, evals<span class="op">=</span>watch_list)</span>
+<span id="cb40-50"><a href="#cb40-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-51"><a href="#cb40-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-52"><a href="#cb40-52" aria-hidden="true" tabindex="-1"></a><span class="co"># 변수 중요도를 출력해본다. 예상하던 변수가 상위로 올라와 있는가?</span></span>
+<span id="cb40-53"><a href="#cb40-53" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Feature importance:"</span>)</span>
+<span id="cb40-54"><a href="#cb40-54" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> kv <span class="kw">in</span> <span class="bu">sorted</span>([(k,v) <span class="cf">for</span> k,v <span class="kw">in</span> model.get_fscore().items()], key<span class="op">=</span><span class="kw">lambda</span> kv: kv[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>):</span>
+<span id="cb40-55"><a href="#cb40-55" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(kv)</span>
+<span id="cb40-56"><a href="#cb40-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-57"><a href="#cb40-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-58"><a href="#cb40-58" aria-hidden="true" tabindex="-1"></a><span class="co"># 캐글 제출을 위하여 테스트 데이터에 대한 예측 값을 구한다.</span></span>
+<span id="cb40-59"><a href="#cb40-59" aria-hidden="true" tabindex="-1"></a>X_tst <span class="op">=</span> tst.as_matrix(columns<span class="op">=</span>features)</span>
+<span id="cb40-60"><a href="#cb40-60" aria-hidden="true" tabindex="-1"></a>dtst <span class="op">=</span> xgb.DMatrix(X_tst, feature_names<span class="op">=</span>features)</span>
+<span id="cb40-61"><a href="#cb40-61" aria-hidden="true" tabindex="-1"></a>preds_tst <span class="op">=</span> model.predict(dtst, ntree_limit<span class="op">=</span>best_ntree_limit)</span>
+<span id="cb40-62"><a href="#cb40-62" aria-hidden="true" tabindex="-1"></a>ncodpers_tst <span class="op">=</span> tst.as_matrix(columns<span class="op">=</span>[<span class="st">'ncodpers'</span>])</span>
+<span id="cb40-63"><a href="#cb40-63" aria-hidden="true" tabindex="-1"></a>preds_tst <span class="op">=</span> preds_tst <span class="op">-</span> tst.as_matrix(columns<span class="op">=</span>[prod <span class="op">+</span> <span class="st">'_prev'</span> <span class="cf">for</span> prod <span class="kw">in</span> prods])</span>
+<span id="cb40-64"><a href="#cb40-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-65"><a href="#cb40-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-66"><a href="#cb40-66" aria-hidden="true" tabindex="-1"></a><span class="co"># 제출 파일을 생성한다.</span></span>
+<span id="cb40-67"><a href="#cb40-67" aria-hidden="true" tabindex="-1"></a>submit_file <span class="op">=</span> <span class="bu">open</span>(<span class="st">'../model/xgb.baseline.2015-06-28'</span>, <span class="st">'w'</span>)</span>
+<span id="cb40-68"><a href="#cb40-68" aria-hidden="true" tabindex="-1"></a>submit_file.write(<span class="st">'ncodpers,added_products</span><span class="ch">\n</span><span class="st">'</span>)</span>
+<span id="cb40-69"><a href="#cb40-69" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ncodper, pred <span class="kw">in</span> <span class="bu">zip</span>(ncodpers_tst, preds_tst):</span>
+<span id="cb40-70"><a href="#cb40-70" aria-hidden="true" tabindex="-1"></a>    y_prods <span class="op">=</span> [(y,p,ip) <span class="cf">for</span> y,p,ip <span class="kw">in</span> <span class="bu">zip</span>(pred, prods, <span class="bu">range</span>(<span class="bu">len</span>(prods)))]</span>
+<span id="cb40-71"><a href="#cb40-71" aria-hidden="true" tabindex="-1"></a>    y_prods <span class="op">=</span> <span class="bu">sorted</span>(y_prods, key<span class="op">=</span><span class="kw">lambda</span> a: a[<span class="dv">0</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">7</span>]</span>
+<span id="cb40-72"><a href="#cb40-72" aria-hidden="true" tabindex="-1"></a>    y_prods <span class="op">=</span> [p <span class="cf">for</span> y,p,ip <span class="kw">in</span> y_prods]</span>
+<span id="cb40-73"><a href="#cb40-73" aria-hidden="true" tabindex="-1"></a>    submit_file.write(<span class="st">'</span><span class="sc">{}</span><span class="st">,</span><span class="sc">{}</span><span class="ch">\n</span><span class="st">'</span>.<span class="bu">format</span>(<span class="bu">int</span>(ncodper), <span class="st">' '</span>.join(y_prods)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

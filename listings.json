@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/credit-fraud-dealing-with-imbalanced-datasets.html",
       "/posts/Santander_ver1.html",
       "/posts/Santander_ver2.html"
     ]
